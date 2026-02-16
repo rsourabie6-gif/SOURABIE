@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rahim Sourabié · entrepreneur · Banfora</title>
+    <title>Rahim Sourabié · Portfolio interactif</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Animate.css pour animations supplémentaires -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         * {
             margin: 0;
@@ -18,6 +20,7 @@
             background: #0b1a2f;
             color: #f0f4fa;
             line-height: 1.5;
+            overflow-x: hidden;
         }
 
         .wrapper {
@@ -26,17 +29,106 @@
             padding: 2rem 1.5rem;
             background: rgba(10, 25, 45, 0.6);
             backdrop-filter: blur(2px);
+            position: relative;
+            z-index: 2;
         }
 
+        /* ========== ANIMATIONS GLOBALES ========== */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(201, 108, 13, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(201, 108, 13, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(201, 108, 13, 0); }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rotateIcon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Classes d'animation */
+        .animate-on-scroll {
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+        }
+
+        .slide-left.visible {
+            animation: slideInLeft 0.8s forwards;
+        }
+
+        .slide-right.visible {
+            animation: slideInRight 0.8s forwards;
+        }
+
+        .slide-up.visible {
+            animation: slideInUp 0.8s forwards;
+        }
+
+        .zoom-in.visible {
+            animation: zoomIn 0.8s forwards;
+        }
+
+        /* Couleurs */
         .orange-dark {
             color: #c96c0d;
         }
         .bg-orange-dark {
             background: #b35f0a;
         }
-        .border-orange {
-            border-color: #c96c0d;
-        }
+
         .btn-orange {
             background: #c96c0d;
             color: #0b1a2f;
@@ -44,20 +136,44 @@
             padding: 0.7rem 1.8rem;
             border-radius: 40px;
             border: none;
-            transition: 0.25s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-block;
             text-decoration: none;
             box-shadow: 0 6px 14px rgba(201, 108, 13, 0.3);
             cursor: pointer;
-        }
-        .btn-orange:hover {
-            background: #e07f1f;
-            transform: scale(1.02);
-            color: #030c17;
-            box-shadow: 0 10px 18px #c96c0d55;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* navbar */
+        .btn-orange:hover {
+            background: #e07f1f;
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 25px rgba(201, 108, 13, 0.5);
+        }
+
+        .btn-orange:active {
+            transform: scale(0.95);
+        }
+
+        .btn-orange::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+
+        .btn-orange:hover::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* navbar avec animation */
         .navbar {
             display: flex;
             flex-wrap: wrap;
@@ -69,40 +185,70 @@
             margin-bottom: 3rem;
             border: 1px solid #c96c0d40;
             box-shadow: 0 6px 14px #00000030;
+            animation: slideInUp 0.8s ease-out;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
         }
+
+        .navbar.scrolled {
+            background: rgba(16, 43, 66, 0.95);
+            padding: 0.8rem 2rem;
+        }
+
         .logo {
             font-size: 2rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
             background: linear-gradient(145deg, #c96c0d, #f2902a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+            transition: all 0.3s;
+            animation: float 4s ease-in-out infinite;
         }
+
         .logo span {
             font-size: 1.2rem;
-            background: none;
             -webkit-text-fill-color: #b9d0e0;
-            color: #b9d0e0;
         }
+
         .nav-links {
             display: flex;
             gap: 2rem;
             font-weight: 500;
         }
+
         .nav-links a {
             color: #e3eef8;
             text-decoration: none;
-            transition: 0.2s;
+            transition: all 0.3s;
             border-bottom: 2px solid transparent;
             padding-bottom: 4px;
-        }
-        .nav-links a:hover {
-            border-bottom-color: #c96c0d;
-            color: #ffb259;
+            position: relative;
         }
 
-        /* hero */
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #c96c0d;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #ffb259;
+            transform: translateY(-2px);
+        }
+
+        /* Hero section avec animations */
         .hero {
             display: flex;
             flex-wrap: wrap;
@@ -114,17 +260,37 @@
             border-radius: 70px 20px 70px 20px;
             border-left: 8px solid #c96c0d;
             box-shadow: 0 20px 30px -8px #00000060;
+            position: relative;
+            overflow: hidden;
+            animation: zoomIn 0.8s ease-out;
         }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(201,108,13,0.1) 0%, transparent 60%);
+            animation: rotateIcon 20s linear infinite;
+        }
+
         .hero-content {
             flex: 1 1 300px;
+            position: relative;
+            z-index: 2;
         }
+
         .hero-content .greet {
             font-size: 1.4rem;
             color: #f2b05e;
             display: flex;
             align-items: center;
             gap: 10px;
+            animation: slideInLeft 0.8s 0.2s both;
         }
+
         .hero-content h1 {
             font-size: 3.5rem;
             font-weight: 800;
@@ -133,12 +299,15 @@
             background: linear-gradient(145deg, #ffffff, #d6dde3);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: slideInLeft 0.8s 0.3s both;
         }
+
         .hero-content .highlight {
             color: #c96c0d;
             -webkit-text-fill-color: #c96c0d;
-            font-weight: 800;
+            animation: pulse-glow 2s infinite;
         }
+
         .hero-desc {
             font-size: 1.3rem;
             margin: 1.5rem 0;
@@ -148,12 +317,16 @@
             border-radius: 0 30px 30px 0;
             width: fit-content;
             padding: 0.8rem 2rem 0.8rem 2rem;
+            animation: slideInLeft 0.8s 0.4s both;
         }
+
         .hero-stats {
             display: flex;
             gap: 2.5rem;
             margin-top: 2rem;
+            animation: slideInLeft 0.8s 0.5s both;
         }
+
         .stat-item i {
             color: #c96c0d;
             font-size: 1.8rem;
@@ -161,110 +334,98 @@
             padding: 0.8rem;
             border-radius: 50%;
             margin-right: 10px;
+            transition: all 0.3s;
         }
 
-        /* vision */
-        .vision-section {
-            margin: 5rem 0;
+        .stat-item:hover i {
+            transform: rotate(360deg) scale(1.2);
+            background: #c96c0d;
+            color: #0b1a2f;
         }
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: inline-block;
-            border-bottom: 6px solid #c96c0d;
-            padding-bottom: 0.3rem;
+
+        .hero > div:last-child {
+            animation: float 5s ease-in-out infinite;
         }
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-top: 2.5rem;
-        }
+
+        /* Cartes avec animations */
         .card {
             background: #0f2640;
             flex: 1 1 280px;
             padding: 2.2rem 1.8rem;
             border-radius: 30px;
             border: 1px solid #c96c0d30;
-            transition: 0.2s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 12px 20px -10px #01070e;
+            position: relative;
+            overflow: hidden;
         }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201,108,13,0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
         .card:hover {
             border-color: #c96c0d;
-            transform: translateY(-6px);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 30px -5px #c96c0d40;
         }
+
         .card i {
             font-size: 2.8rem;
             color: #c96c0d;
             margin-bottom: 1.3rem;
-        }
-        .card h3 {
-            font-size: 1.9rem;
-            margin-bottom: 1rem;
-        }
-        .badge {
-            background: #b35f0a;
-            color: #fff;
-            padding: 0.2rem 0.8rem;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            display: inline-block;
-            margin-bottom: 1rem;
+            transition: all 0.3s;
         }
 
-        /* timeline */
-        .timeline {
-            background: #0d1f32;
-            padding: 3rem 2rem;
-            border-radius: 50px;
-            margin: 4rem 0;
-            border: 2px dashed #c96c0d60;
+        .card:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: #e07f1f;
         }
-        .timeline-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
+
+        /* Timeline avec animations */
         .tl-block {
             background: #112b45;
             padding: 1.5rem;
             border-radius: 32px;
             flex: 1 1 200px;
             border-bottom: 5px solid #c96c0d;
-            transition: 0.2s;
+            transition: all 0.3s;
             min-width: 180px;
+            position: relative;
+            overflow: hidden;
         }
+
+        .tl-block:hover {
+            transform: scale(1.05) translateY(-5px);
+            border-bottom-color: #e07f1f;
+            box-shadow: 0 15px 25px -8px #c96c0d;
+        }
+
         .tl-block .annee {
             font-size: 2rem;
             font-weight: 700;
             color: #c96c0d;
             line-height: 1.2;
-        }
-        .tl-block .lieu {
-            font-weight: 300;
-            margin: 0.5rem 0;
-            font-size: 1.2rem;
-            color: #ffc489;
+            transition: all 0.3s;
         }
 
-        /* compétences */
-        .skills-box {
-            background: #10273e;
-            border-radius: 40px;
-            padding: 2.8rem;
-            background-image: radial-gradient(circle at 90% 20%, #c96c0d15 0%, transparent 40%);
-            border: 1px solid #c96c0d;
-            margin: 3.5rem 0;
+        .tl-block:hover .annee {
+            color: #e07f1f;
+            transform: scale(1.1);
         }
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 2rem 0 0;
-        }
+
+        /* Compétences avec animations */
         .skill-tag {
             background: #0e2135;
             padding: 0.6rem 1.8rem;
@@ -273,311 +434,181 @@
             border: 1px solid #c96c0d;
             color: #f7c690;
             font-weight: 500;
-        }
-        .skill-tag i {
-            margin-right: 0.5rem;
-            color: #c96c0d;
-        }
-
-        /* identité */
-        .identity-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            background: #0e2033;
-            border-radius: 3rem;
-            padding: 2.5rem;
-            margin: 3.5rem 0;
-            align-items: center;
-        }
-        .lieu-detail {
-            flex: 2 1 300px;
-        }
-        .lieu-detail p {
-            margin: 0.7rem 0;
-            font-size: 1.3rem;
-            border-bottom: 1px dashed #c96c0d;
-            padding-bottom: 0.4rem;
-        }
-        .lieu-detail i {
-            color: #c96c0d;
-            width: 2rem;
-        }
-
-        /* FORMULAIRE PROJET (caché par défaut) */
-        .project-form-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 15, 30, 0.9);
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-        .project-form-card {
-            background: #0f2640;
-            max-width: 500px;
-            width: 90%;
-            padding: 2.5rem 2rem;
-            border-radius: 50px;
-            border: 2px solid #c96c0d;
-            box-shadow: 0 25px 40px #00000080;
+            transition: all 0.3s;
             position: relative;
-            animation: fadePop 0.3s;
+            overflow: hidden;
         }
-        @keyframes fadePop {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+
+        .skill-tag:hover {
+            transform: scale(1.1) translateY(-3px);
+            background: #c96c0d;
+            color: #0b1a2f;
+            border-color: #fff;
+            box-shadow: 0 10px 20px -5px #c96c0d;
         }
-        .close-form {
-            position: absolute;
-            top: 1.2rem; right: 1.8rem;
-            font-size: 2rem;
-            color: #c96c0d;
-            cursor: pointer;
-            background: transparent;
-            border: none;
+
+        .skill-tag i {
+            transition: all 0.3s;
         }
-        .project-form-card h2 {
-            font-size: 2rem;
-            border-left: 6px solid #c96c0d;
-            padding-left: 1rem;
-            margin-bottom: 1.8rem;
+
+        .skill-tag:hover i {
+            transform: rotate(360deg);
+            color: #0b1a2f;
         }
-        .form-group {
-            margin-bottom: 1.2rem;
+
+        /* Formulaire projet avec animations */
+        .project-form-card {
+            animation: zoomIn 0.5s ease-out;
         }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.3rem;
-            color: #ffcf9a;
-            font-weight: 500;
+
+        .project-form-card input, .project-form-card textarea {
+            transition: all 0.3s;
         }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: #1d3650;
-            border: 1px solid #c96c0d70;
-            border-radius: 40px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-        }
-        .form-group input:focus, .form-group textarea:focus {
+
+        .project-form-card input:focus, .project-form-card textarea:focus {
+            transform: scale(1.02);
             border-color: #c96c0d;
-            box-shadow: 0 0 0 2px #c96c0d40;
-        }
-        .form-group textarea {
-            border-radius: 30px;
-            resize: vertical;
-        }
-        .form-footer {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            margin-top: 2rem;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #c96c0d;
-            color: #c96c0d;
-            padding: 0.6rem 1.5rem;
-            border-radius: 40px;
-            font-weight: 600;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        .btn-outline:hover {
-            background: #c96c0d20;
+            box-shadow: 0 0 15px rgba(201,108,13,0.5);
         }
 
-        /* ========= MESSAGERIE INTERNE ========= */
-        .messagerie-section {
-            background: #0e2137;
-            border-radius: 50px;
-            padding: 2rem 2.5rem;
-            margin: 3rem 0;
-            border: 2px solid #c96c0d40;
-        }
-        .messagerie-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        .messagerie-header h2 {
-            font-size: 2.2rem;
-            border-left: 6px solid #c96c0d;
-            padding-left: 1rem;
-        }
-        .msg-badge {
-            background: #c96c0d;
-            color: #0b1a2f;
-            padding: 0.5rem 1.5rem;
-            border-radius: 40px;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        .messagerie-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-        /* Formulaire d'envoi (nouveau message) */
-        .msg-formulaire {
-            flex: 1.2;
-            min-width: 300px;
-            background: #10273e;
-            padding: 1.8rem;
-            border-radius: 40px;
-            border: 1px solid #c96c0d;
-        }
-        .msg-formulaire h3 {
-            margin-bottom: 1.5rem;
-            color: #ffc489;
-        }
-        /* Liste des messages reçus */
-        .msg-list {
-            flex: 2;
-            background: #0f2640;
-            padding: 1.5rem;
-            border-radius: 40px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
+        /* Messagerie avec animations */
         .msg-item {
-            background: #1d3650;
-            border-radius: 30px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-left: 6px solid #c96c0d;
-            box-shadow: 0 4px 10px #00000040;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .msg-item.unread {
-            border-left-color: #e07f1f;
-            background: #1f3a58;
-        }
-        .msg-head {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 0.5rem;
-        }
-        .msg-sender {
-            font-weight: bold;
-            font-size: 1.3rem;
-            color: #ffb259;
-        }
-        .msg-date {
-            color: #a0b8cf;
-            font-size: 0.9rem;
-        }
-        .msg-details {
-            margin: 0.7rem 0;
-            background: #0e2135;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            display: inline-block;
-        }
-        .msg-content {
-            margin: 1rem 0;
-            padding: 1rem;
-            background: #0b1a2f;
-            border-radius: 20px;
-        }
-        .msg-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-        .msg-reply-btn, .msg-delete-btn {
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .msg-reply-btn {
-            background: #102b42;
-            color: #c96c0d;
-            border: 2px solid #c96c0d;
-        }
-        .msg-reply-btn:hover {
-            background: #c96c0d;
-            color: #0b1a2f;
-        }
-        .msg-delete-btn {
-            background: transparent;
-            color: #ff9f9f;
-            border: 2px solid #b34a4a;
-        }
-        .msg-delete-btn:hover {
-            background: #b34a4a33;
-        }
-        /* overlay de réponse */
-        .reply-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 15, 30, 0.95);
-            backdrop-filter: blur(5px);
-            align-items: center;
-            justify-content: center;
-            z-index: 1100;
-        }
-        .reply-card {
-            background: #0f2640;
-            max-width: 500px;
-            width: 90%;
-            padding: 2rem;
-            border-radius: 50px;
-            border: 2px solid #c96c0d;
-        }
-        .reply-card h3 {
-            font-size: 2rem;
-            border-left: 6px solid #c96c0d;
-            padding-left: 1rem;
-            margin-bottom: 1rem;
-        }
-        .close-reply {
-            float: right;
-            font-size: 2.5rem;
-            background: none;
-            border: none;
-            color: #c96c0d;
-            cursor: pointer;
-        }
-        /* ========= FIN MESSAGERIE ========= */
 
-        /* footer */
-        .footer {
-            background: #07182a;
-            border-radius: 60px 60px 20px 20px;
-            padding: 2.5rem 2rem;
-            margin-top: 4rem;
-            border-top: 6px solid #c96c0d;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
+        .msg-item:hover {
+            transform: translateX(5px) translateY(-2px);
+            box-shadow: 0 10px 20px -5px #c96c0d;
         }
+
+        .msg-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(201,108,13,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .msg-item:hover::before {
+            left: 100%;
+        }
+
+        .msg-reply-btn, .msg-delete-btn {
+            transition: all 0.3s;
+        }
+
+        .msg-reply-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 5px 15px #c96c0d;
+        }
+
+        .msg-delete-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            background: #b34a4a;
+            color: white;
+        }
+
+        /* Footer avec animation */
+        .footer {
+            animation: slideInUp 0.8s;
+        }
+
         .social a {
-            color: #f0f4fa;
-            background: #102b42;
-            font-size: 1.5rem;
-            margin: 0 0.7rem;
-            padding: 0.7rem 1rem;
-            border-radius: 40px;
-            transition: 0.2s;
+            transition: all 0.3s;
             display: inline-block;
         }
+
         .social a:hover {
+            transform: translateY(-5px) rotate(5deg);
             background: #c96c0d;
             color: #071218;
-            transform: scale(1.1);
+        }
+
+        /* Loader animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b1a2f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #c96c0d;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: rotateIcon 1s linear infinite;
+        }
+
+        /* Bouton retour en haut */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #c96c0d;
+            color: #0b1a2f;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 99;
+            border: 2px solid #fff;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 10px 20px #c96c0d;
+        }
+
+        /* Réutiliser les styles existants */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+            border-bottom: 6px solid #c96c0d;
+            padding-bottom: 0.3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 30%;
+            height: 6px;
+            background: #e07f1f;
+            animation: pulse-glow 2s infinite;
         }
 
         .bg-pattern {
@@ -585,31 +616,33 @@
             top:0; left:0; width:100%; height:100%;
             background-image: radial-gradient(circle at 30% 40%, #c96c0d08 0%, transparent 30%),
                               repeating-linear-gradient(45deg, #0a1b2f 0px, #0a1b2f 2px, #0c1f33 2px, #0c1f33 8px);
-            z-index: -1;
+            z-index: 1;
             pointer-events: none;
         }
-        .whatsapp-contact a {
-            color: #f0f4fa;
-            text-decoration: none;
-            border-bottom: 2px dotted #c96c0d;
-        }
-        /* scrollbar */
-        .msg-list::-webkit-scrollbar { width: 8px; }
-        .msg-list::-webkit-scrollbar-track { background: #1d3650; border-radius: 10px; }
-        .msg-list::-webkit-scrollbar-thumb { background: #c96c0d; border-radius: 10px; }
     </style>
 </head>
 <body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Bouton retour en haut -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <div class="bg-pattern"></div>
     <div class="wrapper">
         <!-- navigation -->
-        <nav class="navbar">
+        <nav class="navbar" id="navbar">
             <div class="logo">Rahim <span>✺ Sourabié</span></div>
             <div class="nav-links">
                 <a href="#parcours">Parcours</a>
                 <a href="#vision">Vision</a>
                 <a href="#competences">Compétences</a>
                 <a href="#contact">Contact</a>
+                <a href="#messagerie">Messagerie</a>
             </div>
         </nav>
 
@@ -626,56 +659,55 @@
                     <div class="stat-item"><i class="fas fa-calendar-alt"></i> 26 ans (1998)</div>
                     <div class="stat-item"><i class="fas fa-heart" style="color:#c96c0d;"></i> Célibataire, sans enfant</div>
                 </div>
-                <!-- bouton qui ouvre le formulaire projet -->
-                <button class="btn-orange" id="openFormBtn" style="margin-top: 2rem;"><i class="fas fa-paper-plane"></i> Soumettre un projet</button>
+                <button class="btn-orange" id="openFormBtn" style="margin-top: 2rem; animation: pulse-glow 2s infinite;"><i class="fas fa-paper-plane"></i> Soumettre un projet</button>
             </div>
             <div style="flex:0.8; min-width:200px; text-align:center;">
-                <i class="fas fa-map-marked-alt" style="font-size: 9rem; color: #c96c0d; opacity:0.8;"></i>
+                <i class="fas fa-map-marked-alt" style="font-size: 9rem; color: #c96c0d; opacity:0.8; animation: float 3s ease-in-out infinite;"></i>
                 <p style="background:#0d2741; padding:0.5rem; border-radius: 3rem;"><i class="fas fa-location-dot orange-dark"></i> Banfora · Gaoua · Bobo</p>
             </div>
         </div>
 
-        <!-- PARCOURS scolaire -->
+        <!-- PARCOURS scolaire avec animations au scroll -->
         <section id="parcours">
-            <h2 class="section-title"><i class="fas fa-graduation-cap orange-dark"></i> Mon parcours scolaire</h2>
-            <div class="timeline">
+            <h2 class="section-title animate-on-scroll slide-left"><i class="fas fa-graduation-cap orange-dark"></i> Mon parcours scolaire</h2>
+            <div class="timeline animate-on-scroll zoom-in">
                 <div class="timeline-grid">
-                    <div class="tl-block"><div class="annee">2004 – 2008</div><div class="lieu"><i class="fas fa-tree"></i> Banfora</div><p>École primaire · Cascades.</p><small>Certificat d'études</small></div>
-                    <div class="tl-block"><div class="annee">2008 – 2014</div><div class="lieu"><i class="fas fa-mountain"></i> Gaoua (Sud-Ouest)</div><p>Collège & lycée.</p><small>BEPC / Bac</small></div>
-                    <div class="tl-block"><div class="annee">2014 – 2022</div><div class="lieu"><i class="fas fa-city"></i> Bobo-Dioulasso</div><p>Études supérieures Bac+2 (informatique).</p><small>Diplôme technique</small></div>
+                    <div class="tl-block animate-on-scroll slide-up" style="transition-delay: 0.1s;"><div class="annee">2004 – 2008</div><div class="lieu"><i class="fas fa-tree"></i> Banfora</div><p>École primaire · Cascades.</p><small>Certificat d'études</small></div>
+                    <div class="tl-block animate-on-scroll slide-up" style="transition-delay: 0.2s;"><div class="annee">2008 – 2014</div><div class="lieu"><i class="fas fa-mountain"></i> Gaoua (Sud-Ouest)</div><p>Collège & lycée.</p><small>BEPC / Bac</small></div>
+                    <div class="tl-block animate-on-scroll slide-up" style="transition-delay: 0.3s;"><div class="annee">2014 – 2022</div><div class="lieu"><i class="fas fa-city"></i> Bobo-Dioulasso</div><p>Études supérieures Bac+2 (informatique).</p><small>Diplôme technique</small></div>
                 </div>
             </div>
         </section>
 
         <!-- Vision entrepreneur -->
         <section id="vision">
-            <h2 class="section-title"><i class="fas fa-bullseye orange-dark"></i> Vision entrepreneuriale</h2>
+            <h2 class="section-title animate-on-scroll slide-right"><i class="fas fa-bullseye orange-dark"></i> Vision entrepreneuriale</h2>
             <div class="card-container">
-                <div class="card"><i class="fas fa-bus"></i><span class="badge">Débutant · projet</span><h3>Auto‑bus</h3><p>Créer une liaison de transport confortable entre Banfora, Gaoua, Bobo.</p></div>
-                <div class="card"><i class="fas fa-hard-hat"></i><span class="badge">BTP · ambition</span><h3>Bâtiment & TP</h3><p>Entrepreneur en construction, rénovation et aménagement.</p></div>
-                <div class="card"><i class="fas fa-microchip"></i><span class="badge">+ informatique</span><h3>Double compétence</h3><p>Utiliser mes acquis en informatique pour gérer et innover.</p></div>
+                <div class="card animate-on-scroll zoom-in" style="transition-delay: 0.1s;"><i class="fas fa-bus"></i><span class="badge">Débutant · projet</span><h3>Auto‑bus</h3><p>Créer une liaison de transport confortable entre Banfora, Gaoua, Bobo.</p></div>
+                <div class="card animate-on-scroll zoom-in" style="transition-delay: 0.2s;"><i class="fas fa-hard-hat"></i><span class="badge">BTP · ambition</span><h3>Bâtiment & TP</h3><p>Entrepreneur en construction, rénovation et aménagement.</p></div>
+                <div class="card animate-on-scroll zoom-in" style="transition-delay: 0.3s;"><i class="fas fa-microchip"></i><span class="badge">+ informatique</span><h3>Double compétence</h3><p>Utiliser mes acquis en informatique pour gérer et innover.</p></div>
             </div>
         </section>
 
         <!-- Compétences -->
         <section id="competences">
-            <div class="skills-box">
+            <div class="skills-box animate-on-scroll slide-up">
                 <h2 style="font-size:2.3rem;"><span class="orange-dark">⌨️</span> Compétences informatique</h2>
                 <div class="skill-tags">
-                    <span class="skill-tag"><i class="fab fa-windows"></i> Windows</span>
-                    <span class="skill-tag"><i class="fas fa-code"></i> HTML/CSS</span>
-                    <span class="skill-tag"><i class="fas fa-database"></i> Gestion données</span>
-                    <span class="skill-tag"><i class="fas fa-network-wired"></i> Réseaux</span>
-                    <span class="skill-tag"><i class="fas fa-file-excel"></i> Excel</span>
+                    <span class="skill-tag animate-on-scroll zoom-in" style="transition-delay: 0.1s;"><i class="fab fa-windows"></i> Windows</span>
+                    <span class="skill-tag animate-on-scroll zoom-in" style="transition-delay: 0.2s;"><i class="fas fa-code"></i> HTML/CSS</span>
+                    <span class="skill-tag animate-on-scroll zoom-in" style="transition-delay: 0.3s;"><i class="fas fa-database"></i> Gestion données</span>
+                    <span class="skill-tag animate-on-scroll zoom-in" style="transition-delay: 0.4s;"><i class="fas fa-network-wired"></i> Réseaux</span>
+                    <span class="skill-tag animate-on-scroll zoom-in" style="transition-delay: 0.5s;"><i class="fas fa-file-excel"></i> Excel</span>
                 </div>
             </div>
         </section>
 
         <!-- identité + contact whatsapp direct -->
-        <div class="identity-row">
+        <div class="identity-row animate-on-scroll slide-left">
             <div style="flex:1; text-align:center;">
-                <i class="fas fa-heart" style="font-size:4rem; color:#c96c0d;"></i>
-                <i class="fas fa-user" style="font-size:4rem; color:#c96c0d; margin-left:1rem;"></i>
+                <i class="fas fa-heart" style="font-size:4rem; color:#c96c0d; animation: float 3s ease-in-out infinite;"></i>
+                <i class="fas fa-user" style="font-size:4rem; color:#c96c0d; margin-left:1rem; animation: float 3.5s ease-in-out infinite;"></i>
                 <p><i class="fas fa-check-circle orange-dark"></i> Célibataire, sans enfant</p>
                 <p><i class="fas fa-cake-candles orange-dark"></i> Né en 1998 à Banfora</p>
             </div>
@@ -688,7 +720,7 @@
         </div>
 
         <!-- Zone contact avec whatsapp + bouton projet -->
-        <section id="contact" style="background:#0e2137; border-radius: 50px; padding: 2.5rem; margin: 3rem 0;">
+        <section id="contact" class="animate-on-scroll slide-right" style="background:#0e2137; border-radius: 50px; padding: 2.5rem; margin: 3rem 0;">
             <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:center;">
                 <div style="flex:2">
                     <h2 style="font-size:2.5rem;"><span class="orange-dark">Débutant</span> mais déterminé</h2>
@@ -700,7 +732,7 @@
                     <button class="btn-orange" id="openFormBtn2"><i class="fas fa-file-signature"></i> Remplir la fiche projet</button>
                 </div>
                 <div style="flex:1; min-width:200px;">
-                    <div style="background:#b35f0a; border-radius: 30px; padding:1.5rem; text-align:center;">
+                    <div style="background:#b35f0a; border-radius: 30px; padding:1.5rem; text-align:center; animation: float 4s ease-in-out infinite;">
                         <i class="fas fa-handshake" style="font-size:4rem; color:#0b1a2f;"></i>
                         <p style="color:#031016;">Discutons sur WhatsApp</p>
                         <a href="https://wa.me/22677030941" target="_blank" class="btn-orange" style="background:#102b42; color:white; border:2px solid #c96c0d;"><i class="fab fa-whatsapp"></i> +226 77 03 09 41</a>
@@ -709,15 +741,15 @@
             </div>
         </section>
 
-        <!-- ========= MESSAGERIE INTERNE AJOUTÉE ========= -->
-        <section class="messagerie-section" id="messagerie">
+        <!-- MESSAGERIE INTERNE -->
+        <section class="messagerie-section animate-on-scroll zoom-in" id="messagerie">
             <div class="messagerie-header">
                 <h2><i class="fas fa-comments orange-dark"></i> Messagerie interne</h2>
                 <span class="msg-badge" id="messageCount">0</span>
             </div>
             <div class="messagerie-container">
-                <!-- Formulaire pour envoyer un message (les visiteurs écrivent à Rahim) -->
-                <div class="msg-formulaire">
+                <!-- Formulaire pour envoyer un message -->
+                <div class="msg-formulaire animate-on-scroll slide-left">
                     <h3><i class="fas fa-pen-alt orange-dark"></i> Écrire à Rahim</h3>
                     <form id="messageForm">
                         <div class="form-group">
@@ -740,8 +772,8 @@
                     </form>
                 </div>
 
-                <!-- Liste des messages reçus (pour Rahim) -->
-                <div class="msg-list" id="messageList">
+                <!-- Liste des messages reçus -->
+                <div class="msg-list animate-on-scroll slide-right" id="messageList">
                     <div style="text-align:center; color:#aaa; padding:2rem;" id="emptyMessages">
                         <i class="fas fa-inbox" style="font-size:3rem;"></i>
                         <p>Aucun message pour l'instant.</p>
@@ -751,7 +783,7 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="footer">
+        <footer class="footer animate-on-scroll slide-up">
             <div>© 2025 · Rahim Sourabié · Banfora / Bobo</div>
             <div class="social">
                 <a href="https://wa.me/22677030941" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -763,7 +795,7 @@
         </footer>
     </div>
 
-    <!-- FORMULAIRE DE PROJET (overlay) – existant -->
+    <!-- FORMULAIRE DE PROJET (overlay) -->
     <div class="project-form-overlay" id="projectFormOverlay">
         <div class="project-form-card">
             <button class="close-form" id="closeFormBtn">&times;</button>
@@ -793,7 +825,7 @@
         </div>
     </div>
 
-    <!-- OVERLAY DE RÉPONSE (pour messagerie) -->
+    <!-- OVERLAY DE RÉPONSE -->
     <div class="reply-overlay" id="replyOverlay">
         <div class="reply-card">
             <button class="close-reply" id="closeReply">&times;</button>
@@ -812,6 +844,55 @@
 
     <script>
         (function() {
+            // ========= LOADER =========
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    document.getElementById('loader').classList.add('hidden');
+                }, 500);
+            });
+
+            // ========= ANIMATIONS AU SCROLL =========
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            function checkScroll() {
+                animatedElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
+                        el.classList.add('visible');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkScroll);
+            window.addEventListener('load', checkScroll);
+            setTimeout(checkScroll, 100);
+
+            // ========= NAVBAR SCROLL EFFECT =========
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // ========= BACK TO TOP BUTTON =========
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
             // ========= CODE EXISTANT (formulaire projet) =========
             const overlay = document.getElementById('projectFormOverlay');
             const openBtns = [document.getElementById('openFormBtn'), document.getElementById('openFormBtn2')];
@@ -825,6 +906,7 @@
                     overlay.style.display = 'flex';
                 });
             });
+            
             const closeOverlay = () => { overlay.style.display = 'none'; };
             if(closeBtn) closeBtn.addEventListener('click', closeOverlay);
             if(cancelBtn) cancelBtn.addEventListener('click', closeOverlay);
@@ -854,7 +936,6 @@
 
             const messageForm = document.getElementById('messageForm');
             const messageList = document.getElementById('messageList');
-            const emptyMessages = document.getElementById('emptyMessages');
             const messageCountSpan = document.getElementById('messageCount');
             const replyOverlay = document.getElementById('replyOverlay');
             const closeReply = document.getElementById('closeReply');
@@ -864,13 +945,11 @@
             const sendReplyBtn = document.getElementById('sendReplyBtn');
             let currentReplyId = null;
 
-            // Sauvegarder et afficher
             function saveMessages() {
                 localStorage.setItem('rahimMessages', JSON.stringify(messages));
                 renderMessages();
             }
 
-            // Afficher les messages
             function renderMessages() {
                 if (messages.length === 0) {
                     messageList.innerHTML = `<div style="text-align:center; color:#aaa; padding:2rem;"><i class="fas fa-inbox" style="font-size:3rem;"></i><p>Aucun message pour l'instant.</p></div>`;
@@ -878,14 +957,13 @@
                     return;
                 }
 
-                // Trier du plus récent au plus ancien
                 const sorted = [...messages].sort((a,b) => new Date(b.date) - new Date(a.date));
                 let html = '';
                 sorted.forEach(msg => {
                     const date = new Date(msg.date).toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'});
                     const unreadClass = msg.read ? '' : 'unread';
                     html += `
-                        <div class="msg-item ${unreadClass}" data-id="${msg.id}">
+                        <div class="msg-item ${unreadClass} animate-on-scroll slide-right" data-id="${msg.id}">
                             <div class="msg-head">
                                 <span class="msg-sender"><i class="fas fa-user-circle orange-dark"></i> ${escapeHtml(msg.sender)}</span>
                                 <span class="msg-date">${date}</span>
@@ -902,9 +980,11 @@
                 messageList.innerHTML = html;
                 messageCountSpan.textContent = messages.length;
 
-                // Marquer comme lus
                 messages.forEach(m => m.read = true);
                 localStorage.setItem('rahimMessages', JSON.stringify(messages));
+                
+                // Déclencher les animations sur les nouveaux messages
+                setTimeout(checkScroll, 50);
             }
 
             function escapeHtml(unsafe) {
@@ -915,7 +995,6 @@
                 });
             }
 
-            // Ajouter un message (depuis formulaire)
             messageForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const sender = document.getElementById('msgNom').value.trim();
@@ -941,7 +1020,6 @@
                 alert('Message envoyé !');
             });
 
-            // Gestion clics sur les messages (supprimer / répondre)
             messageList.addEventListener('click', (e) => {
                 const btn = e.target.closest('button');
                 if (!btn) return;
@@ -963,7 +1041,6 @@
                 }
             });
 
-            // Fermer overlay de réponse
             function closeReplyOverlay() {
                 replyOverlay.style.display = 'none';
                 replyText.value = '';
@@ -975,7 +1052,6 @@
                 if (e.target === replyOverlay) closeReplyOverlay();
             });
 
-            // Envoyer réponse via WhatsApp
             sendReplyBtn.addEventListener('click', () => {
                 if (!currentReplyId) {
                     alert('Erreur');
@@ -995,15 +1071,196 @@
                 closeReplyOverlay();
             });
 
-            // Initialiser
+            // Initialisation
             renderMessages();
+
+            // Animation sur les liens de navigation
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
         })();
     </script>
 
-    <!-- petits styles supplémentaires -->
     <style>
-        .whatsapp-contact a:hover { color: #c96c0d; }
-        #openFormBtn, #openFormBtn2 { cursor: pointer; }
+        /* Styles supplémentaires pour l'interactivité */
+        .project-form-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 15, 30, 0.95);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .reply-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 15, 30, 0.95);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #ffcf9a;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: #1d3650;
+            border: 1px solid #c96c0d70;
+            border-radius: 40px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #c96c0d;
+            color: #c96c0d;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: #c96c0d20;
+            transform: scale(1.05);
+        }
+
+        .messagerie-section {
+            background: #0e2137;
+            border-radius: 50px;
+            padding: 2rem 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid #c96c0d40;
+        }
+
+        .messagerie-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .messagerie-header h2 {
+            font-size: 2.2rem;
+            border-left: 6px solid #c96c0d;
+            padding-left: 1rem;
+        }
+
+        .msg-badge {
+            background: #c96c0d;
+            color: #0b1a2f;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .messagerie-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .msg-formulaire {
+            flex: 1.2;
+            min-width: 300px;
+            background: #10273e;
+            padding: 1.8rem;
+            border-radius: 40px;
+            border: 1px solid #c96c0d;
+        }
+
+        .msg-list {
+            flex: 2;
+            background: #0f2640;
+            padding: 1.5rem;
+            border-radius: 40px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .msg-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .msg-list::-webkit-scrollbar-track {
+            background: #1d3650;
+            border-radius: 10px;
+        }
+
+        .msg-list::-webkit-scrollbar-thumb {
+            background: #c96c0d;
+            border-radius: 10px;
+        }
+
+        .badge {
+            background: #b35f0a;
+            color: #fff;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 0;
+        }
+
+        .identity-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: #0e2033;
+            border-radius: 3rem;
+            padding: 2.5rem;
+            margin: 3.5rem 0;
+            align-items: center;
+        }
     </style>
 </body>
 </html>
