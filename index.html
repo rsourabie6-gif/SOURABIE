@@ -386,10 +386,171 @@
             border-radius: 40px;
             font-weight: 600;
             transition: 0.2s;
+            cursor: pointer;
         }
         .btn-outline:hover {
             background: #c96c0d20;
         }
+
+        /* ========= MESSAGERIE INTERNE ========= */
+        .messagerie-section {
+            background: #0e2137;
+            border-radius: 50px;
+            padding: 2rem 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid #c96c0d40;
+        }
+        .messagerie-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .messagerie-header h2 {
+            font-size: 2.2rem;
+            border-left: 6px solid #c96c0d;
+            padding-left: 1rem;
+        }
+        .msg-badge {
+            background: #c96c0d;
+            color: #0b1a2f;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .messagerie-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        /* Formulaire d'envoi (nouveau message) */
+        .msg-formulaire {
+            flex: 1.2;
+            min-width: 300px;
+            background: #10273e;
+            padding: 1.8rem;
+            border-radius: 40px;
+            border: 1px solid #c96c0d;
+        }
+        .msg-formulaire h3 {
+            margin-bottom: 1.5rem;
+            color: #ffc489;
+        }
+        /* Liste des messages reçus */
+        .msg-list {
+            flex: 2;
+            background: #0f2640;
+            padding: 1.5rem;
+            border-radius: 40px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .msg-item {
+            background: #1d3650;
+            border-radius: 30px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 6px solid #c96c0d;
+            box-shadow: 0 4px 10px #00000040;
+        }
+        .msg-item.unread {
+            border-left-color: #e07f1f;
+            background: #1f3a58;
+        }
+        .msg-head {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        .msg-sender {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #ffb259;
+        }
+        .msg-date {
+            color: #a0b8cf;
+            font-size: 0.9rem;
+        }
+        .msg-details {
+            margin: 0.7rem 0;
+            background: #0e2135;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+        }
+        .msg-content {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #0b1a2f;
+            border-radius: 20px;
+        }
+        .msg-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .msg-reply-btn, .msg-delete-btn {
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .msg-reply-btn {
+            background: #102b42;
+            color: #c96c0d;
+            border: 2px solid #c96c0d;
+        }
+        .msg-reply-btn:hover {
+            background: #c96c0d;
+            color: #0b1a2f;
+        }
+        .msg-delete-btn {
+            background: transparent;
+            color: #ff9f9f;
+            border: 2px solid #b34a4a;
+        }
+        .msg-delete-btn:hover {
+            background: #b34a4a33;
+        }
+        /* overlay de réponse */
+        .reply-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 15, 30, 0.95);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+        }
+        .reply-card {
+            background: #0f2640;
+            max-width: 500px;
+            width: 90%;
+            padding: 2rem;
+            border-radius: 50px;
+            border: 2px solid #c96c0d;
+        }
+        .reply-card h3 {
+            font-size: 2rem;
+            border-left: 6px solid #c96c0d;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .close-reply {
+            float: right;
+            font-size: 2.5rem;
+            background: none;
+            border: none;
+            color: #c96c0d;
+            cursor: pointer;
+        }
+        /* ========= FIN MESSAGERIE ========= */
 
         /* footer */
         .footer {
@@ -432,12 +593,16 @@
             text-decoration: none;
             border-bottom: 2px dotted #c96c0d;
         }
+        /* scrollbar */
+        .msg-list::-webkit-scrollbar { width: 8px; }
+        .msg-list::-webkit-scrollbar-track { background: #1d3650; border-radius: 10px; }
+        .msg-list::-webkit-scrollbar-thumb { background: #c96c0d; border-radius: 10px; }
     </style>
 </head>
 <body>
     <div class="bg-pattern"></div>
     <div class="wrapper">
-        <!-- navigation avec nouveau nom -->
+        <!-- navigation -->
         <nav class="navbar">
             <div class="logo">Rahim <span>✺ Sourabié</span></div>
             <div class="nav-links">
@@ -448,7 +613,7 @@
             </div>
         </nav>
 
-        <!-- Hero section -- Rahim Sourabié -->
+        <!-- Hero section -->
         <div class="hero">
             <div class="hero-content">
                 <div class="greet"><i class="fas fa-hand-peace orange-dark"></i> Jeune bâtisseur, 1998 · Banfora</div>
@@ -461,7 +626,7 @@
                     <div class="stat-item"><i class="fas fa-calendar-alt"></i> 26 ans (1998)</div>
                     <div class="stat-item"><i class="fas fa-heart" style="color:#c96c0d;"></i> Célibataire, sans enfant</div>
                 </div>
-                <!-- bouton qui ouvre le formulaire -->
+                <!-- bouton qui ouvre le formulaire projet -->
                 <button class="btn-orange" id="openFormBtn" style="margin-top: 2rem;"><i class="fas fa-paper-plane"></i> Soumettre un projet</button>
             </div>
             <div style="flex:0.8; min-width:200px; text-align:center;">
@@ -470,7 +635,7 @@
             </div>
         </div>
 
-        <!-- PARCOURS scolaire inchangé -->
+        <!-- PARCOURS scolaire -->
         <section id="parcours">
             <h2 class="section-title"><i class="fas fa-graduation-cap orange-dark"></i> Mon parcours scolaire</h2>
             <div class="timeline">
@@ -522,7 +687,7 @@
             </div>
         </div>
 
-        <!-- Zone contact avec mention whatsapp + bouton ouvrir formulaire -->
+        <!-- Zone contact avec whatsapp + bouton projet -->
         <section id="contact" style="background:#0e2137; border-radius: 50px; padding: 2.5rem; margin: 3rem 0;">
             <div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:center;">
                 <div style="flex:2">
@@ -532,7 +697,6 @@
                         <i class="fab fa-whatsapp orange-dark"></i> <a href="https://wa.me/22677030941" target="_blank" style="color:#f0f4fa;">+226 77 03 09 41</a> (WhatsApp)<br>
                         <i class="fas fa-envelope orange-dark"></i> rahim.sourabie@profil.bf
                     </div>
-                    <!-- Deuxième bouton pour ouvrir le formulaire -->
                     <button class="btn-orange" id="openFormBtn2"><i class="fas fa-file-signature"></i> Remplir la fiche projet</button>
                 </div>
                 <div style="flex:1; min-width:200px;">
@@ -545,9 +709,50 @@
             </div>
         </section>
 
+        <!-- ========= MESSAGERIE INTERNE AJOUTÉE ========= -->
+        <section class="messagerie-section" id="messagerie">
+            <div class="messagerie-header">
+                <h2><i class="fas fa-comments orange-dark"></i> Messagerie interne</h2>
+                <span class="msg-badge" id="messageCount">0</span>
+            </div>
+            <div class="messagerie-container">
+                <!-- Formulaire pour envoyer un message (les visiteurs écrivent à Rahim) -->
+                <div class="msg-formulaire">
+                    <h3><i class="fas fa-pen-alt orange-dark"></i> Écrire à Rahim</h3>
+                    <form id="messageForm">
+                        <div class="form-group">
+                            <label>Votre nom *</label>
+                            <input type="text" id="msgNom" placeholder="Nom et prénom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Votre téléphone *</label>
+                            <input type="tel" id="msgTel" placeholder="+226 XX XX XX XX" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Votre ville *</label>
+                            <input type="text" id="msgVille" placeholder="Ouagadougou, Bobo..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message *</label>
+                            <textarea id="msgTexte" rows="4" placeholder="Votre message pour Rahim..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-orange" style="width:100%;"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                    </form>
+                </div>
+
+                <!-- Liste des messages reçus (pour Rahim) -->
+                <div class="msg-list" id="messageList">
+                    <div style="text-align:center; color:#aaa; padding:2rem;" id="emptyMessages">
+                        <i class="fas fa-inbox" style="font-size:3rem;"></i>
+                        <p>Aucun message pour l'instant.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- FOOTER -->
         <footer class="footer">
-            <div>© 2026 · Rahim Sourabié · Banfora / Bobo</div>
+            <div>© 2025 · Rahim Sourabié · Banfora / Bobo</div>
             <div class="social">
                 <a href="https://wa.me/22677030941" target="_blank"><i class="fab fa-whatsapp"></i></a>
                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -558,7 +763,7 @@
         </footer>
     </div>
 
-    <!-- FORMULAIRE DE PROJET (overlay) – envoi vers whatsapp -->
+    <!-- FORMULAIRE DE PROJET (overlay) – existant -->
     <div class="project-form-overlay" id="projectFormOverlay">
         <div class="project-form-card">
             <button class="close-form" id="closeFormBtn">&times;</button>
@@ -588,24 +793,38 @@
         </div>
     </div>
 
+    <!-- OVERLAY DE RÉPONSE (pour messagerie) -->
+    <div class="reply-overlay" id="replyOverlay">
+        <div class="reply-card">
+            <button class="close-reply" id="closeReply">&times;</button>
+            <h3><i class="fas fa-reply orange-dark"></i> Répondre</h3>
+            <div id="replyInfo" style="background:#1d3650; padding:1rem; border-radius:30px; margin-bottom:1rem;"></div>
+            <div class="form-group">
+                <label>Votre réponse</label>
+                <textarea id="replyText" rows="4" placeholder="Écrivez votre réponse..."></textarea>
+            </div>
+            <div style="display:flex; gap:1rem; justify-content:flex-end;">
+                <button class="btn-outline" id="cancelReply">Annuler</button>
+                <button class="btn-orange" id="sendReplyBtn"><i class="fab fa-whatsapp"></i> Répondre via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
-            // Éléments du formulaire
+            // ========= CODE EXISTANT (formulaire projet) =========
             const overlay = document.getElementById('projectFormOverlay');
             const openBtns = [document.getElementById('openFormBtn'), document.getElementById('openFormBtn2')];
             const closeBtn = document.getElementById('closeFormBtn');
             const cancelBtn = document.getElementById('cancelFormBtn');
             const form = document.getElementById('projectForm');
 
-            // ouvrir
             openBtns.forEach(btn => {
                 if(btn) btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     overlay.style.display = 'flex';
                 });
             });
-
-            // fermer
             const closeOverlay = () => { overlay.style.display = 'none'; };
             if(closeBtn) closeBtn.addEventListener('click', closeOverlay);
             if(cancelBtn) cancelBtn.addEventListener('click', closeOverlay);
@@ -613,40 +832,171 @@
                 if (e.target === overlay) closeOverlay();
             });
 
-            // ENVOI WHATSAPP avec les données du formulaire
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-
-                // Récupération des champs
                 const nom = document.getElementById('nom').value.trim();
                 const tel = document.getElementById('tel').value.trim();
                 const ville = document.getElementById('ville').value.trim();
                 const description = document.getElementById('description').value.trim();
-
                 if (!nom || !tel || !ville || !description) {
                     alert('Tous les champs doivent être remplis.');
                     return;
                 }
-
-                // Numéro cible (WhatsApp Rahim)
-                const phoneNumber = '22677030941';  // déjà au format international sans +
-
-                // Construction du message
+                const phoneNumber = '22677030941';
                 const message = `*Nouvelle demande de projet*%0A%0A👤 *Nom* : ${nom}%0A📞 *Téléphone* : ${tel}%0A🌍 *Ville* : ${ville}%0A📝 *Description* :%0A${description}`;
-
-                // Création du lien WhatsApp
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
-
-                // Ouvrir dans un nouvel onglet
-                window.open(whatsappUrl, '_blank');
-
-                // (Optionnel) fermer le formulaire après envoi
+                window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
                 closeOverlay();
-                form.reset(); // remet à zéro
+                form.reset();
             });
 
-            // Message console
-            console.log('🌍 Site Rahim Sourabié - Formulaire projet connecté au WhatsApp +22677030941');
+            // ========= MESSAGERIE INTERNE =========
+            let messages = JSON.parse(localStorage.getItem('rahimMessages')) || [];
+
+            const messageForm = document.getElementById('messageForm');
+            const messageList = document.getElementById('messageList');
+            const emptyMessages = document.getElementById('emptyMessages');
+            const messageCountSpan = document.getElementById('messageCount');
+            const replyOverlay = document.getElementById('replyOverlay');
+            const closeReply = document.getElementById('closeReply');
+            const cancelReply = document.getElementById('cancelReply');
+            const replyInfo = document.getElementById('replyInfo');
+            const replyText = document.getElementById('replyText');
+            const sendReplyBtn = document.getElementById('sendReplyBtn');
+            let currentReplyId = null;
+
+            // Sauvegarder et afficher
+            function saveMessages() {
+                localStorage.setItem('rahimMessages', JSON.stringify(messages));
+                renderMessages();
+            }
+
+            // Afficher les messages
+            function renderMessages() {
+                if (messages.length === 0) {
+                    messageList.innerHTML = `<div style="text-align:center; color:#aaa; padding:2rem;"><i class="fas fa-inbox" style="font-size:3rem;"></i><p>Aucun message pour l'instant.</p></div>`;
+                    messageCountSpan.textContent = '0';
+                    return;
+                }
+
+                // Trier du plus récent au plus ancien
+                const sorted = [...messages].sort((a,b) => new Date(b.date) - new Date(a.date));
+                let html = '';
+                sorted.forEach(msg => {
+                    const date = new Date(msg.date).toLocaleString('fr-FR', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                    const unreadClass = msg.read ? '' : 'unread';
+                    html += `
+                        <div class="msg-item ${unreadClass}" data-id="${msg.id}">
+                            <div class="msg-head">
+                                <span class="msg-sender"><i class="fas fa-user-circle orange-dark"></i> ${escapeHtml(msg.sender)}</span>
+                                <span class="msg-date">${date}</span>
+                            </div>
+                            <div class="msg-details"><i class="fas fa-map-pin orange-dark"></i> ${escapeHtml(msg.city)} · <i class="fas fa-phone"></i> ${escapeHtml(msg.phone)}</div>
+                            <div class="msg-content">${escapeHtml(msg.message).replace(/\n/g, '<br>')}</div>
+                            <div class="msg-actions">
+                                <button class="msg-reply-btn" data-id="${msg.id}" data-sender="${escapeHtml(msg.sender)}" data-phone="${escapeHtml(msg.phone)}"><i class="fas fa-reply"></i> Répondre</button>
+                                <button class="msg-delete-btn" data-id="${msg.id}"><i class="fas fa-trash"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                messageList.innerHTML = html;
+                messageCountSpan.textContent = messages.length;
+
+                // Marquer comme lus
+                messages.forEach(m => m.read = true);
+                localStorage.setItem('rahimMessages', JSON.stringify(messages));
+            }
+
+            function escapeHtml(unsafe) {
+                if (!unsafe) return '';
+                return unsafe.replace(/[&<>"]/g, function(m) {
+                    if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;';
+                    return m;
+                });
+            }
+
+            // Ajouter un message (depuis formulaire)
+            messageForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const sender = document.getElementById('msgNom').value.trim();
+                const phone = document.getElementById('msgTel').value.trim();
+                const city = document.getElementById('msgVille').value.trim();
+                const text = document.getElementById('msgTexte').value.trim();
+                if (!sender || !phone || !city || !text) {
+                    alert('Tous les champs sont requis.');
+                    return;
+                }
+                const newMsg = {
+                    id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2,6),
+                    sender: sender,
+                    phone: phone,
+                    city: city,
+                    message: text,
+                    date: new Date().toISOString(),
+                    read: false
+                };
+                messages.push(newMsg);
+                saveMessages();
+                messageForm.reset();
+                alert('Message envoyé !');
+            });
+
+            // Gestion clics sur les messages (supprimer / répondre)
+            messageList.addEventListener('click', (e) => {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                const id = btn.getAttribute('data-id');
+                if (!id) return;
+
+                if (btn.classList.contains('msg-delete-btn')) {
+                    if (confirm('Supprimer ce message ?')) {
+                        messages = messages.filter(m => m.id !== id);
+                        saveMessages();
+                    }
+                }
+                else if (btn.classList.contains('msg-reply-btn')) {
+                    const sender = btn.getAttribute('data-sender');
+                    const phone = btn.getAttribute('data-phone');
+                    currentReplyId = id;
+                    replyInfo.innerHTML = `<strong><i class="fas fa-user"></i> ${sender}</strong> · <i class="fab fa-whatsapp"></i> ${phone}`;
+                    replyOverlay.style.display = 'flex';
+                }
+            });
+
+            // Fermer overlay de réponse
+            function closeReplyOverlay() {
+                replyOverlay.style.display = 'none';
+                replyText.value = '';
+                currentReplyId = null;
+            }
+            closeReply.addEventListener('click', closeReplyOverlay);
+            cancelReply.addEventListener('click', closeReplyOverlay);
+            replyOverlay.addEventListener('click', (e) => {
+                if (e.target === replyOverlay) closeReplyOverlay();
+            });
+
+            // Envoyer réponse via WhatsApp
+            sendReplyBtn.addEventListener('click', () => {
+                if (!currentReplyId) {
+                    alert('Erreur');
+                    closeReplyOverlay();
+                    return;
+                }
+                const msg = messages.find(m => m.id === currentReplyId);
+                if (!msg) return;
+                const reply = replyText.value.trim();
+                if (!reply) {
+                    alert('Écrivez une réponse.');
+                    return;
+                }
+                const phone = msg.phone.replace(/\s+/g, '').replace('+', '');
+                const text = `Bonjour ${msg.sender},\n\nRéponse de Rahim Sourabié à votre message :\n\n"${msg.message}"\n\n📩 Ma réponse :\n${reply}`;
+                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+                closeReplyOverlay();
+            });
+
+            // Initialiser
+            renderMessages();
         })();
     </script>
 
